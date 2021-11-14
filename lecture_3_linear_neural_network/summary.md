@@ -34,3 +34,38 @@ $$
 $$
 现在变成了最小化(3)式了，那么也就是所有误差取得最小的时候得到最大似然估计。
 
+## 2. softmax回归
+
+**softmax函数**
+
+softmax是用来将输出结果转化为概率结果的函数，它保证了所有概率之和为1。其函数方程如下：
+$$
+\hat y = softmax(o), 其中 \hat y_j = \frac{\exp(o_j)}{\sum_k\exp(o_k)} \tag{4}
+$$
+**损失函数**
+
+衡量softmax的输出值与实际值之间的误差，可以使用对数似然。
+
+如果有n个样本以及样本的真实值，那么估计值与实际值可以进行比较：
+$$
+P(Y|X) = \prod_{i=1}^n p(y^{(i)}|x^{(i)}) \tag{5}
+$$
+根据最大似然估计的方法，对上式去负对数，那么就变成了最小化下式：
+$$
+-\log P(Y|X) = \sum_{i=1}^n-\log P(y^{(i)}|x^{(i)}) = \sum_{i=1}^nl(y^{(i)}, \hat y^{(i)}) \tag{6}
+$$
+对于softmax输出的$\hat y$，以及真实标签之间的误差为：
+$$
+l(y,\hat y) = - \sum_{j=1}^qy_j \log \hat y_j \tag{7}
+$$
+
+> $y_i$只有在真实值时为1， 其余均为。所以（7）式的求和符号可以省略。
+
+因此，当将softmax函数带入（7）式：
+$$
+l(y,\hat y) =  \log \sum_{k=1}^q\exp(o_k) - \sum_{j=1}^qy_jo_j \tag{8}
+$$
+考虑上式对$o_j$的导数：
+$$
+\partial_{o_j} l(y,\hat y) = \frac{\exp(o_j)}{\sum_{k=1}^q \exp(o_k)}-y_j= softmax(o)_j - y_j
+$$
